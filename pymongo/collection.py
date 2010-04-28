@@ -422,7 +422,7 @@ class Collection(object):
         return as_dict
 
     def find(self, spec=None, fields=None, skip=0, limit=0,
-             timeout=True, snapshot=False, tailable=False,
+             timeout=True, snapshot=False, tailable=False, max_scan=-1,
              _sock=None, _must_use_master=False, _is_command=False):
         """Query the database.
 
@@ -465,6 +465,8 @@ class Collection(object):
             the cursor will continue from the last document received. For
             details, see the `tailable cursor documentation
             <http://www.mongodb.org/display/DOCS/Tailable+Cursors>`_.
+          - `max_scan` (optional): limit the number of records examened before
+            returning a result.
 
         .. versionadded:: 1.1
            The `tailable` parameter.
@@ -497,7 +499,7 @@ class Collection(object):
             fields = self._fields_list_to_dict(fields)
 
         return Cursor(self, spec, fields, skip, limit, slave_okay, timeout,
-                      tailable, snapshot, _sock=_sock,
+                      tailable, snapshot, max_scan=max_scan, _sock=_sock, 
                       _must_use_master=_must_use_master,
                       _is_command=_is_command)
 
